@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Bookstore Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #4fc3f7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Search Section */
+        .search-container {
+            max-width: 1200px;
+            margin: -50px auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .search-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-header h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .search-form {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: #666;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        /* Bookstore Grid */
+        .bookstore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .bookstore-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .bookstore-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .bookstore-img {
+            height: 200px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bookstore-info {
+            padding: 1.5rem;
+        }
+
+        .bookstore-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating {
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .location i {
+            margin-right: 5px;
+        }
+
+        .bookstore-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-tag {
+            background-color: #e9f5ff;
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* Map Section */
+        .map-section {
+            margin: 3rem 0;
+        }
+
+        .map-container {
+            height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="navbar">
+            <div class="logo">LocalBookstores</div>
+            <nav class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Browse</a>
+                <a href="#">Events</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Local Bookstores Near You</h1>
+            <p>Support independent booksellers and find hidden literary gems in your community</p>
+            <button class="btn btn-primary">Explore Now</button>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <div class="search-container">
+        <div class="search-box">
+            <div class="search-header">
+                <h2>Find Your Next Favorite Bookstore</h2>
+                <p>Search by location, specialty, or features</p>
+            </div>
+            <form class="search-form">
+                <div class="form-group">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Search by name, location, or genre...">
+                </div>
+                <select class="form-control">
+                    <option value="">All Categories</option>
+                    <option value="new">New Books</option>
+                    <option value="used">Used Books</option>
+                    <option value="specialty">Specialty Genres</option>
+                    <option value="children">Children's Books</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            <div class="filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Near Me</button>
+                <button class="filter-btn">Open Now</button>
+                <button class="filter-btn">Coffee Shop</button>
+                <button class="filter-btn">Events</button>
+                <button class="filter-btn">4+ Stars</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Bookstores -->
+    <section class="container">
+        <h2 class="section-title">Featured Bookstores</h2>
+        <div class="bookstore-grid">
+            <!-- Bookstore Card 1 -->
+            <div class="bookstore-card">
+                <div class="bookstore-img" style="background-image: url('https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="bookstore-info">
+                    <h3>The Book Nook</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>(42)</span>
+                    </div>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Book St, Downtown</span>
+                    </div>
+                    <div class="bookstore-features">
+                        <span class="feature-tag">Used Books</span>
+                        <span class="feature-tag">Coffee Shop</span>
+                        <span class="feature-tag">Reading Nooks</span>
+                    </div>
+                    <p>A cozy independent bookstore specializing in rare and used books with a charming café.</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">View Details</button>
+                </div>
+            </div>
+
+            <!-- Bookstore Card 2 -->
+            <div class="bookstore-card">
+                <div class="bookstore-img" style="background-image: url('https://images.unsplash.com/photo-1535905557558-afc4877a26fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="bookstore-info">
+                    <h3>Page Turner</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span>(36)</span>
+                    </div>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>456 Novel Ave, Midtown</span>
+                    </div>
+                    <div class="bookstore-features">
+                        <span class="feature-tag">New Releases</span>
+                        <span class="feature-tag">Author Events</span>
+                        <span class="feature-tag">Gift Shop</span>
+                    </div>
+                    <p>Modern bookstore with the latest bestsellers and frequent author signings.</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">View Details</button>
+                </div>
+            </div>
+
+            <!-- Bookstore Card 3 -->
+            <div class="bookstore-card">
+                <div class="bookstore-img" style="background-image: url('https://images.unsplash.com/photo-1600189261867-30e5ffe7b8da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="bookstore-info">
+                    <h3>Children's Corner</h3>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span>(58)</span>
+                    </div>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>789 Story Ln, Westside</span>
+                    </div>
+                    <div class="bookstore-features">
+                        <span class="feature-tag">Kids Books</span>
+                        <span class="feature-tag">Story Time</span>
+                        <span class="feature-tag">Play Area</span>
+                    </div>
+                    <p>Specializing in children's literature with daily story hours and educational toys.</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">View Details</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="container map-section">
+        <h2 class="section-title">Find Bookstores Near You</h2>
+        <div class="map-container" id="map">
+            <!-- Map will be rendered here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="container">
+        <h2 class="section-title">Upcoming Events</h2>
+        <div class="bookstore-grid">
+            <!-- Event Card 1 -->
+            <div class="bookstore-card">
+                <div class="bookstore-img" style="background-image: url('https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="bookstore-info">
+                    <h3>Author Reading: Jane Doe</h3>
+                    <div class="location">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>June 15, 2023 | 6:00 PM</span>
+                    </div>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>The Book Nook</span>
+                    </div>
+                    <p>Join us for an evening with bestselling author Jane Doe as she reads from her latest novel.</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">RSVP</button>
+                </div>
+            </div>
+
+            <!-- Event Card 2 -->
+            <div class="bookstore-card">
+                <div class="bookstore-img" style="background-image: url('https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="bookstore-info">
+                    <h3>Book Club Meeting</h3>
+                    <div class="location">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>June 18, 2023 | 7:00 PM</span>
+                    </div>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Page Turner</span>
+                    </div>
+                    <p>Monthly book club discussion of "The Midnight Library" by Matt Haig.</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Join Club</button>
+                </div>
+            </div>
+
+            <!-- Event Card 3 -->
+            <div class="bookstore-card">
+                <div class="bookstore-img" style="background-image: url('https://images.unsplash.com/photo-1575425186775-b8de9a427e67?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="bookstore-info">
+                    <h3>Children's Story Hour</h3>
+                    <div class="location">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Every Saturday | 10:00 AM</span>
+                    </div>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Children's Corner</span>
+                    </div>
+                    <p>Weekly story time for kids ages 3-8 featuring classic and contemporary children's books.</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="container" style="background-color: var(--primary); color: white; padding: 2rem; border-radius: 8px; margin: 3rem auto; max-width: 800px;">
+        <h2 style="text-align: center; margin-bottom: 1rem;">Stay Updated</h2>
+        <p style="text-align: center; margin-bottom: 1.5rem;">Subscribe to our newsletter for new bookstore features and events</p>
+        <form style="display: flex; gap: 1rem; max-width: 600px; margin: 0 auto;">
+            <input type="email" placeholder="Your email address" style="flex-grow: 1; padding: 12px; border: none; border-radius: 4px;">
+            <button type="submit" class="btn" style="background-color: var(--accent); color: var(--dark);">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>LocalBookstores</h3>
+                <p>Connecting readers with independent bookstores in their communities since 2023.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-goodreads"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Bookstores</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">For Bookstores</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> hello@localbookstores.com</li>
+                    <li><i class="fas fa-phone"></i> (555) 123-4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Library Lane, Bookville</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 LocalBookstores. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize Map (using Leaflet.js as it's simpler for this demo)
+        function initMap() {
+            // Create a simple map centered on a default location
+            const map = L.map('map').setView([51.505, -0.09], 13);
+            
+            // Add tile layer (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Add sample markers for bookstores
+            const bookstores = [
+                { name: "The Book Nook", lat: 51.505, lng: -0.09 },
+                { name: "Page Turner", lat: 51.51, lng: -0.1 },
+                { name: "Children's Corner", lat: 51.515, lng: -0.07 }
+            ];
+            
+            bookstores.forEach(store => {
+                L.marker([store.lat, store.lng])
+                    .addTo(map)
+                    .bindPopup(`<b>${store.name}</b><br>Click for details`)
+                    .openPopup();
+            });
+        }
+        
+        // Load Leaflet.js and initialize map
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create script element for Leaflet CSS
+            const leafletCSS = document.createElement('link');
+            leafletCSS.rel = 'stylesheet';
+            leafletCSS.href = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';
+            document.head.appendChild(leafletCSS);
+            
+            // Create script element for Leaflet JS
+            const leafletJS = document.createElement('script');
+            leafletJS.src = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js';
+            leafletJS.onload = initMap;
+            document.body.appendChild(leafletJS);
+            
+            // Filter button functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    // Here you would filter the bookstore results
+                    console.log(`Filter by: ${this.textContent}`);
+                });
+            });
+            
+            // Search form submission
+            const searchForm = document.querySelector('.search-form');
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const searchInput = this.querySelector('input[type="text"]').value;
+                const categorySelect = this.querySelector('select').value;
+                console.log(`Searching for: ${searchInput} in category: ${categorySelect}`);
+                // Here you would implement the search functionality
+            });
+        });
+    </script>
+</body>
+</html>
